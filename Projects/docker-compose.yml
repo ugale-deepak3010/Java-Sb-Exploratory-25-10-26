@@ -1,24 +1,24 @@
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: dbs-postgres
+    container_name: deepbank-postgres
     environment:
-      POSTGRES_DB: dbs_banking
-      POSTGRES_USER: dbs_user
-      POSTGRES_PASSWORD: dbs_password
+      POSTGRES_DB: deepbank_db
+      POSTGRES_USER: deepbank_user
+      POSTGRES_PASSWORD: deepbank_password
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U dbs_user -d dbs_banking"]
+      test: ["CMD-SHELL", "pg_isready -U deepbank_user -d deepbank_db"]
       interval: 5s
       timeout: 5s
       retries: 5
 
   redis:
     image: redis:7-alpine
-    container_name: dbs-redis
+    container_name: deepbank-redis
     ports:
       - "6379:6379"
     command: redis-server --appendonly yes
@@ -30,7 +30,7 @@ services:
 
   kafka:
     image: confluentinc/cp-kafka:7.6.0
-    container_name: dbs-kafka
+    container_name: deepbank-kafka
     ports:
       - "9092:9092"
       - "9094:9094"

@@ -1,4 +1,4 @@
-# DBS Bank Singapore / IBM 7+ YOE Interview Defense Drill
+# DeepBank Bank Singapore / IBM 7+ YOE Interview Defense Drill
 
 > **Candidate Briefing:** Tailored for **Prabhakara Rao Inapanuri** (Lead Architect, 16 YOE) & **Amudha K.** (Delivery Tower Lead, 26+ YOE).  
 > **Core Domain:** Real-time FAST (Fast And Secure Transfers) & PayLah Microservices.
@@ -9,7 +9,7 @@
 
 ### Q: "How do you guarantee that a user cannot spend the same SGD 500 balance twice when two concurrent payment requests arrive at the exact same millisecond?"
 **Answer Script:**
-> *"In our DBS FAST implementation, we employ a defense-in-depth strategy across three layers:*
+> *"In our DeepBank FAST implementation, we employ a defense-in-depth strategy across three layers:*
 > 1. **Edge Idempotency (Redis `SETNX`):** The client must pass a client-generated `X-Idempotency-Key` (UUIDv4). In our `transfer-service`, we execute Redis `setIfAbsent(key, "PROCESSING", 120s)`. If two identical requests hit two gateway instances concurrently, only one thread acquires the lock; the duplicate request is rejected immediately with **HTTP 409 Conflict**.
 > 2. **Database Row-Level Serialization (`PESSIMISTIC_WRITE`):** At the database tier in `account-service`, the balance debit executes inside a `@Transactional(isolation = Isolation.READ_COMMITTED)` boundary with JPA:
 >    ```java
@@ -71,7 +71,7 @@
 
 ## 6. Banking Domain, MAS Compliance & Delivery Reliability (Amudha K. Focus)
 
-### Q: "In DBS Singapore, FAST transfers are governed by MAS guidelines requiring 99.999% availability and zero lost transactions. How does this architecture meet regulatory standards?"
+### Q: "In DeepBank Singapore, FAST transfers are governed by MAS guidelines requiring 99.999% availability and zero lost transactions. How does this architecture meet regulatory standards?"
 **Answer Script:**
 > 1. **Audit Ledger Immutability:** Our `transaction_ledger` table is append-only. No balance change occurs without an accompanying ledger line item containing `transferId`, `balanceBefore`, `balanceAfter`, and timestamp.
 > 2. **Zero Message Loss (Outbox + DLT):** Dual-write risks are eliminated by the Outbox pattern. Unparseable or fatal messages do not freeze consumer partitions; our `DeadLetterPublishingRecoverer` automatically routes poison pills to `transfer-events.DLT` after 3 retries, raising an instant alert to the SRE delivery team while allowing normal FAST transfers to continue uninterrupted.

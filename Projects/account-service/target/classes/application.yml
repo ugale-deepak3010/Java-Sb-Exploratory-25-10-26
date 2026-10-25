@@ -9,9 +9,9 @@ spring:
       enabled: true
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/dbs_banking
-    username: dbs_user
-    password: dbs_password
+    url: jdbc:postgresql://localhost:5433/deepbank_db
+    username: deepbank_user
+    password: deepbank_password
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 20
@@ -44,7 +44,7 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
-        spring.json.trusted.packages: "com.dbs.banking.*"
+        spring.json.trusted.packages: "com.deepbank.*"
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer

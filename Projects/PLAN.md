@@ -1,10 +1,10 @@
-# DBS PayLah / FAST Real-Time Funds Transfer Microservices Plan
+# DeepBank PayLah / FAST Real-Time Funds Transfer Microservices Plan
 
 > [!IMPORTANT]
-> **Target Role:** Senior Java / Spring Boot Developer (7+ YOE) | **Client:** DBS Bank Singapore via IBM  
+> **Target Role:** Senior Java / Spring Boot Developer (7+ YOE) | **Client:** DeepBank Bank Singapore via IBM  
 > **Technical Panel Focus:**
 > - **Prabhakara Rao Inapanuri (Lead Architect / 16 YOE):** Spring Boot 3 internals, Concurrency, Concurrency Locks, Kafka Partitioning/EOS, Redis Idempotency, Saga & Outbox, Resilience4j.
-> - **Amudha K. (Delivery Tower Lead / 26+ YOE Banking DBS):** Zero-downtime release, Audit ledger integrity, MAS (Monetary Authority of Singapore) FAST SLAs (99.999%), Failure recovery, DLT monitoring.
+> - **Amudha K. (Delivery Tower Lead / 26+ YOE Banking DeepBank):** Zero-downtime release, Audit ledger integrity, MAS (Monetary Authority of Singapore) FAST SLAs (99.999%), Failure recovery, DLT monitoring.
 
 ---
 

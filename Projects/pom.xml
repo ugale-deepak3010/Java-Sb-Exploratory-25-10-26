@@ -4,12 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.dbs.banking</groupId>
-    <artifactId>dbs-fast-platform</artifactId>
+    <groupId>com.deepbank</groupId>
+    <artifactId>deepbank-platform</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>dbs-fast-platform</name>
-    <description>DBS FAST / PayLah Real-Time Payment Microservices Platform</description>
+    <name>deepbank-platform</name>
+    <description>DeepBank Real-Time Payment Platform</description>
 
     <modules>
         <module>banking-common</module>
@@ -48,7 +48,7 @@
             </dependency>
             <!-- Internal Common Module -->
             <dependency>
-                <groupId>com.dbs.banking</groupId>
+                <groupId>com.deepbank</groupId>
                 <artifactId>banking-common</artifactId>
                 <version>${project.version}</version>
             </dependency>

@@ -1,2 +1,2 @@
-com/dbs/banking/gateway/FallbackController.class
-com/dbs/banking/gateway/ApiGatewayApplication.class
+com/deepbank/gateway/ApiGatewayApplication.class
+com/deepbank/gateway/FallbackController.class
