@@ -1,0 +1,26 @@
+1. need to run docker command
+
+docker compose up -d
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
