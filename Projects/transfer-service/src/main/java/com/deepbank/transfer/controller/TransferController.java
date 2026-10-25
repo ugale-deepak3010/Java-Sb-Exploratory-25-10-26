@@ -28,7 +28,7 @@ public class TransferController {
     }
 
     @GetMapping("/{transferId}")
-    public ResponseEntity<ApiResponse<TransferResponse>> getTransfer(@PathVariable String transferId) {
+    public ResponseEntity<ApiResponse<TransferResponse>> getTransfer(@PathVariable("transferId") String transferId) {
         TransferResponse response = transferService.getTransfer(transferId);
         return ResponseEntity.ok(ApiResponse.ok(response));
     }

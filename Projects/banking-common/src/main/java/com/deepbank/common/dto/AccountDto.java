@@ -15,4 +15,4 @@ public record AccountDto(
         Long version,
         Instant createdAt,
         Instant updatedAt
-) {}
+) implements java.io.Serializable {}

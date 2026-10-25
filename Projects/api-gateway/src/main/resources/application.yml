@@ -33,6 +33,12 @@ spring:
                 fallbackUri: forward:/fallback/transfers
 
 resilience4j:
+  timelimiter:
+    instances:
+      accountServiceBreaker:
+        timeout-duration: 5s
+      transferServiceBreaker:
+        timeout-duration: 5s
   circuitbreaker:
     instances:
       accountServiceBreaker:

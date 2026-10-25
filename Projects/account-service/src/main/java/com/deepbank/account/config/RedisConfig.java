@@ -20,19 +20,16 @@ public class RedisConfig {
     public static final String ACCOUNT_CACHE = "accounts";
 
     @Bean
-    public RedisCacheConfiguration cacheConfiguration() {
-        return RedisCacheConfiguration.defaultCacheConfig()
+    public org.springframework.data.redis.cache.RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+        RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofMinutes(5))
                 .disableCachingNullValues()
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
-    }
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(org.springframework.data.redis.serializer.RedisSerializer.java()));
 
-    @Bean
-    public RedisCacheManagerBuilderCustomizer redisCacheManagerBuilderCustomizer() {
-        return (builder) -> builder
-                .withCacheConfiguration(ACCOUNT_CACHE,
-                        RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(5)));
+        return org.springframework.data.redis.cache.RedisCacheManager.builder(connectionFactory)
+                .cacheDefaults(config)
+                .build();
     }
 
     @Bean

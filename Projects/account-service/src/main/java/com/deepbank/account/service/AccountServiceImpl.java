@@ -75,7 +75,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = RedisConfig.ACCOUNT_CACHE, key = "#accountNumber")
+    @Cacheable(value = RedisConfig.ACCOUNT_CACHE, key = "#p0")
     public AccountDto getAccount(String accountNumber) {
         log.info("Fetching account {} from Database (Cache miss)", accountNumber);
         Account account = accountRepository.findByAccountNumber(accountNumber)
@@ -92,7 +92,7 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    @CacheEvict(value = RedisConfig.ACCOUNT_CACHE, key = "#accountNumber")
+    @CacheEvict(value = RedisConfig.ACCOUNT_CACHE, key = "#p1")
     public AccountDto debit(String transferId, String accountNumber, BigDecimal amount, String remarks) {
         log.info("Debiting {} from account {} for transfer {}", amount, accountNumber, transferId);
 
@@ -132,7 +132,7 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    @CacheEvict(value = RedisConfig.ACCOUNT_CACHE, key = "#accountNumber")
+    @CacheEvict(value = RedisConfig.ACCOUNT_CACHE, key = "#p1")
     public AccountDto credit(String transferId, String accountNumber, BigDecimal amount, String remarks) {
         log.info("Crediting {} to account {} for transfer {}", amount, accountNumber, transferId);
 

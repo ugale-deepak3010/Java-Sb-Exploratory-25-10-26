@@ -1,0 +1,117 @@
+{
+  "info": {
+    "name": "DeepBank Microservices Platform",
+    "description": "Real-Time Funds Transfer Banking APIs via Spring Cloud Gateway (:8080)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Create Sender Account (Alice)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"accountNumber\": \"DB-SG-101\",\n  \"customerId\": \"CUST-ALICE\",\n  \"accountHolderName\": \"Alice Tan\",\n  \"currency\": \"SGD\",\n  \"initialBalance\": 1000.00\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/accounts",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "v1", "accounts"]
+        }
+      }
+    },
+    {
+      "name": "2. Create Receiver Account (Bob)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"accountNumber\": \"DB-SG-102\",\n  \"customerId\": \"CUST-BOB\",\n  \"accountHolderName\": \"Bob Lee\",\n  \"currency\": \"SGD\",\n  \"initialBalance\": 200.00\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/accounts",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "v1", "accounts"]
+        }
+      }
+    },
+    {
+      "name": "3. Check Alice Balance (Redis Cache-Aside)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/accounts/DB-SG-101",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "v1", "accounts", "DB-SG-101"]
+        }
+      }
+    },
+    {
+      "name": "4. Execute Real-Time Transfer (Alice -> Bob $150)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"idempotencyKey\": \"REQ-TXN-0001\",\n  \"sourceAccountNumber\": \"DB-SG-101\",\n  \"destinationAccountNumber\": \"DB-SG-102\",\n  \"amount\": 150.00,\n  \"currency\": \"SGD\",\n  \"referenceNotes\": \"Lunch split\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/transfers",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "v1", "transfers"]
+        }
+      }
+    },
+    {
+      "name": "5. Check Alice Audit Ledger",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/accounts/DB-SG-101/ledger",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "v1", "accounts", "DB-SG-101", "ledger"]
+        }
+      }
+    },
+    {
+      "name": "6. Test Double-Tap Rejection (Duplicate Idempotency Key)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"idempotencyKey\": \"REQ-TXN-0001\",\n  \"sourceAccountNumber\": \"DB-SG-101\",\n  \"destinationAccountNumber\": \"DB-SG-102\",\n  \"amount\": 150.00,\n  \"currency\": \"SGD\",\n  \"referenceNotes\": \"Accidental double click\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/transfers",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "v1", "transfers"]
+        }
+      }
+    }
+  ]
+}
