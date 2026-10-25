@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record CreateAccountRequest(
+		
         @NotBlank(message = "Account number is required")
         String accountNumber,
 

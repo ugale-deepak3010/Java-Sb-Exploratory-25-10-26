@@ -1,5 +1,16 @@
 package com.deepbank.account.service;
 
+import java.math.BigDecimal;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.deepbank.account.config.RedisConfig;
 import com.deepbank.account.entity.Account;
 import com.deepbank.account.entity.TransactionLedger;
@@ -13,16 +24,6 @@ import com.deepbank.common.exception.AccountFrozenException;
 import com.deepbank.common.exception.AccountNotFoundException;
 import com.deepbank.common.exception.BankingException;
 import com.deepbank.common.exception.InsufficientFundsException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
-import java.util.List;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -40,6 +41,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public AccountDto createAccount(CreateAccountRequest request) {
+    	
         if (accountRepository.existsByAccountNumber(request.accountNumber())) {
             throw new BankingException("Account number already exists: " + request.accountNumber(), "ACCOUNT_EXISTS");
         }
@@ -57,6 +59,7 @@ public class AccountServiceImpl implements AccountService {
 
         // Record initial balance into ledger
         if (request.initialBalance().compareTo(BigDecimal.ZERO) > 0) {
+        	
             TransactionLedger initialLedger = new TransactionLedger(
                     "INITIAL_DEPOSIT",
                     saved.getAccountNumber(),
@@ -66,6 +69,7 @@ public class AccountServiceImpl implements AccountService {
                     request.initialBalance(),
                     "Initial account opening deposit"
             );
+            
             ledgerRepository.save(initialLedger);
         }
 
@@ -77,9 +81,12 @@ public class AccountServiceImpl implements AccountService {
     @Transactional(readOnly = true)
     @Cacheable(value = RedisConfig.ACCOUNT_CACHE, key = "#p0")
     public AccountDto getAccount(String accountNumber) {
+    	
         log.info("Fetching account {} from Database (Cache miss)", accountNumber);
+        
         Account account = accountRepository.findByAccountNumber(accountNumber)
                 .orElseThrow(() -> new AccountNotFoundException(accountNumber));
+        
         return toDto(account);
     }
 
@@ -170,6 +177,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     private AccountDto toDto(Account account) {
+    	
         return new AccountDto(
                 account.getId(),
                 account.getAccountNumber(),

@@ -1,7 +1,10 @@
 package com.deepbank.common.exception;
 
 public class BankingException extends RuntimeException {
-    private final String errorCode;
+	
+    private static final long serialVersionUID = 1L;
+    
+	private final String errorCode;
 
     public BankingException(String message, String errorCode) {
         super(message);
